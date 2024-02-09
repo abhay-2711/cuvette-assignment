@@ -28,7 +28,7 @@ const signin = async (req, res, next) => {
         console.log(token);
         const { password: hashedPassword, ...rest } = validUser._doc;
         const expiryDate = new Date(Date.now() + 60*60*1000); //1 hour
-        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate, sameSite: 'none', secure: true } ).status(200).json(rest);
+        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate, sameSite: 'none', secure } ).status(200).json(rest);
     } catch (error) {
         next(error);
     }
