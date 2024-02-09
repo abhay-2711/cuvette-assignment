@@ -2,11 +2,12 @@ const User = require('../models/User');
 const bcryptjs = require('bcryptjs');
 const errorHandler = require('../utils/error');
 const jwt = require('jsonwebtoken');
+const nodemon = require('nodemon');
 
 const signup = async (req, res, next) => {
-    const {name, age, email, password, dateOfBirth, address, phoneNumber, pincode} = req.body;
+    const { email, password} = req.body;
     const hashedPassword = bcryptjs.hashSync(password, 10);
-    const newUser = new User({name, age, email, password: hashedPassword, dateOfBirth, address, phoneNumber, pincode});
+    const newUser = new User({email, password: hashedPassword});
     try {
         await newUser.save();
         res.status(201).json({ message: "User Created Successfully!" });
@@ -27,7 +28,7 @@ const signin = async (req, res, next) => {
         console.log(token);
         const { password: hashedPassword, ...rest } = validUser._doc;
         const expiryDate = new Date(Date.now() + 60*60*1000); //1 hour
-        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate }).status(200).json(rest);
+        res.cookie('access_token', token, { httpOnly: true, expires: expiryDate, sameSite: 'none', secure: true } ).status(200).json(rest);
     } catch (error) {
         next(error);
     }
