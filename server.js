@@ -11,12 +11,12 @@ mongoose.connect(process.env.MONGO_DB_URI).then(() => {
     console.log(err);
 })
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:3000',credentials: true}));
 app.use(express.json());
 app.use(cookieParser());
 
 app.get('/', (req,res) => {
-    res.send('<h1>Backend Assessment</h1><h2>Abhay Pratap Singh, CSE, IIITS</h2><h3>Instructions :</h3><p>signup : /api/auth/signup<p><p>signin : /api/auth/signin<p><p>signout : /api/auth/signout<p><p>createNote : /api/note/createNote<p><p>getAllNote : /api/note/getAllNote<p><p>getNote : /api/note/getNote<p><p>updateNote : /api/note/updateNote<p><p>deleteNote : /api/note/deleteNote<p>');
+    res.send('Server is running');
 })
 
 app.listen(5000, () => {
